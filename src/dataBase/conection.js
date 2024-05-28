@@ -1,9 +1,10 @@
 import pkg from "pg";
 import "dotenv/config";
 const { Pool } = pkg;
+import dotenv from 'dotenv'
 
-const connectionString = process.env.PG_STRING_URL;
-// cambia los datos de acuerdo a tu configuración de postgres
+dotenv.config();
+
 export const pool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
@@ -13,9 +14,5 @@ export const pool = new Pool({
   allowExitOnIdle: true,
 });
 
-try {
-  await pool.query("SELECT NOW()");
-  console.log("Database connected");
-} catch (error) {
-  console.log(error);
-}
+
+export default pool;
