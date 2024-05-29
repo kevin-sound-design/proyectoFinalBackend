@@ -9,9 +9,7 @@ const getProducts = async (req, res) =>{
 
 const getProductById = async (req, res) =>{
   const productId = req.params.id;
-  console.log(productId)
   const formattedQuery = format("SELECT * FROM %I WHERE id = %L", "producto", productId );
-  console.log(formattedQuery)
   const {rows} = await pool.query(formattedQuery);
   res.json(rows);
 }
