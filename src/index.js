@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv"
-import galeriaRouter from './routes/galeria.router.js'
+import dotenv from "dotenv";
+import galeriaRouter from "./routes/galeria.router.js";
+import userRouter from "./routes/user.router.js";
 
 //cargando variable de entorno
 dotenv.config();
@@ -17,7 +18,8 @@ app.use(cors());
 
 // usar los routers
 
-app.use('/productos', galeriaRouter);
+app.use("/productos", galeriaRouter);
+app.use("/user", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Servidor levantado en puerto ${PORT}`);
