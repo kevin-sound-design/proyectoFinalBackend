@@ -16,18 +16,18 @@ const getAllUsers = async (req, res) => {
 
 // Get user by ID (for general users and admin)
 const getUserById = async (req, res) => {
-  const { id } = req.params;
+  let { id } = req.params;
   try {
-    let user;
     if (req.user.rol === "admin") {
-      user = await usuariosModel.getUserById(id, true); // Include role
+      // Admin can fetch any user's data
+      const user = await usuariosModel.getUserById(id, true); // Include role
+      return res.status(200).json({ user });
     } else {
-      user = await usuariosModel.getUserById(id, false); // Exclude role
-      if (req.user.id !== user.id) {
-        return res.status(403).json({ error: "Access denied" });
-      }
+      // Cliente can only fetch their own data
+      id = req.user.id;
+      const user = await usuariosModel.getUserById(id, false); // Exclude role
+      return res.status(200).json({ user });
     }
-    return res.status(200).json({ user });
   } catch (error) {
     console.error("Error fetching user:", error);
     return res.status(500).json({ message: error.message });
@@ -36,19 +36,29 @@ const getUserById = async (req, res) => {
 
 // Update user by ID (for general users and admin)
 const updateUserById = async (req, res) => {
-  const { id } = req.params;
-  const { direccion, nombre, apellido, password } = req.body;
+  let { id } = req.params;
+  const { direccion, email } = req.body;
+
   try {
-    if (req.user.rol !== "admin" && req.user.id !== parseInt(id, 10)) {
+    if (req.user.rol === "admin") {
+      // Admins can update any user
+      const updatedUser = await usuariosModel.updateUserById(id, { direccion, email });
+      return res.status(200).json({ message: "User updated successfully", updatedUser });
+    } else if (req.user.rol === "cliente") {
+      // Regular users can only update their own information
+      id = req.user.id;
+      const updatedUser = await usuariosModel.updateUserById(id, { direccion, email });
+      return res.status(200).json({ message: "User updated successfully", updatedUser });
+    } else {
       return res.status(403).json({ error: "Access denied" });
     }
-    const updatedUser = await usuariosModel.updateUserById(id, { direccion, nombre, apellido, password });
-    return res.status(200).json({ message: "User updated successfully", updatedUser });
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: error.message });
   }
 };
+
+
 
 export const usuariosController = {
   getAllUsers,

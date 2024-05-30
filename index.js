@@ -1,16 +1,17 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import galeriaRouter from "./routes/galeria.router.js";
-import userRouter from "./routes/user.router.js";
-import carritoRouter from './routes/carrito.router.js'
-import productRouter from "./routes/product.router.js";
-import orderRouter from "./routes/order.router.js";  
-import usuariosRouter from "./routes/usuarios.router.js"
+import galeriaRouter from "./src/routes/galeria.router.js";
+import userRouter from "./src/routes/user.router.js";
+import carritoRouter from './src/routes/carrito.router.js'
+import productRouter from "./src/routes/product.router.js";
+import orderRouter from "./src/routes/order.router.js";  
+import usuariosRouter from "./src/routes/usuarios.router.js"
 
 
 //cargando variable de entorno
 dotenv.config();
+
 
 const PORT = process.env.PORT || 3500;
 const app = express();
