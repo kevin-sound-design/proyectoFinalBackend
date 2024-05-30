@@ -8,4 +8,6 @@ router.get('/', galeriaController.getProducts);
 
 router.get('/:id', galeriaController.getProductById);
 
+
+
 export default router;

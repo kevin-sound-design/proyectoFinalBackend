@@ -3,8 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import galeriaRouter from "./routes/galeria.router.js";
 import userRouter from "./routes/user.router.js";
+import carritoRouter from './routes/carrito.router.js'
 import productRouter from "./routes/product.router.js";
-import orderRouter from "./routes/order.router.js";  // Added this import
+import orderRouter from "./routes/order.router.js";  
+
 
 //cargando variable de entorno
 dotenv.config();
@@ -21,8 +23,9 @@ app.use(cors());
 // usar los routers
 app.use("/productos", galeriaRouter);
 app.use("/user", userRouter);
+app.use("/carrito", carritoRouter)
 app.use("/productos/CRUD", productRouter);
-app.use("/pedidos", orderRouter);  // Add this route
+app.use("/pedidos", orderRouter);  
 
 app.listen(PORT, () => {
   console.log(`Servidor levantado en puerto ${PORT}`);
