@@ -3,8 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import galeriaRouter from "./routes/galeria.router.js";
 import userRouter from "./routes/user.router.js";
-import productRouter from "./routes/product.router.js"
-
+import productRouter from "./routes/product.router.js";
+import orderRouter from "./routes/order.router.js";  // Added this import
 
 //cargando variable de entorno
 dotenv.config();
@@ -19,10 +19,10 @@ app.use(express.json());
 app.use(cors());
 
 // usar los routers
-
 app.use("/productos", galeriaRouter);
 app.use("/user", userRouter);
 app.use("/productos/CRUD", productRouter);
+app.use("/pedidos", orderRouter);  // Add this route
 
 app.listen(PORT, () => {
   console.log(`Servidor levantado en puerto ${PORT}`);
