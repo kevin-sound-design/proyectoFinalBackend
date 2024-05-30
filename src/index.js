@@ -6,6 +6,7 @@ import userRouter from "./routes/user.router.js";
 import carritoRouter from './routes/carrito.router.js'
 import productRouter from "./routes/product.router.js";
 import orderRouter from "./routes/order.router.js";  
+import usuariosRouter from "./routes/usuarios.router.js"
 
 
 //cargando variable de entorno
@@ -26,6 +27,7 @@ app.use("/user", userRouter);
 app.use("/carrito", carritoRouter)
 app.use("/productos/CRUD", productRouter);
 app.use("/pedidos", orderRouter);  
+app.use("/usuarios", usuariosRouter)
 
 app.listen(PORT, () => {
   console.log(`Servidor levantado en puerto ${PORT}`);
