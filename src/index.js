@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import galeriaRouter from "./routes/galeria.router.js";
 import userRouter from "./routes/user.router.js";
+import carritoRouter from './routes/carrito.router.js'
 
 //cargando variable de entorno
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(cors());
 
 app.use("/productos", galeriaRouter);
 app.use("/user", userRouter);
+app.use("/carrito", carritoRouter)
 
 app.listen(PORT, () => {
   console.log(`Servidor levantado en puerto ${PORT}`);
