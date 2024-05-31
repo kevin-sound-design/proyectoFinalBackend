@@ -14,9 +14,8 @@ export const authMiddleware = (req, res, next) => {
     req.user = {
       id: payload.user_id,
       email: payload.email,
-      rol: payload.rol
+      rol: payload.rol,
     };
-
 
     next();
   } catch (error) {
@@ -27,9 +26,11 @@ export const authMiddleware = (req, res, next) => {
 
 // isAdmin middleware
 export const isAdmin = (req, res, next) => {
-  if (req.user && req.user.rol === 'admin') {
+  if (req.user && req.user.rol === "admin") {
     next(); // Allow access to the next middleware or route handler
   } else {
-    return res.status(403).json({ error: 'Access denied. Only admins are allowed.' });
+    return res
+      .status(403)
+      .json({ error: "Access denied. Only admins are allowed." });
   }
 };

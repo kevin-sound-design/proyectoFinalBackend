@@ -12,17 +12,15 @@ const create = async ({
   apellido,
   rol = "cliente",
   direccion,
-  fecha = new Date().toISOString(),
 }) => {
   const queryUser =
-    "INSERT INTO usuarios (nombre, apellido, password, email, rol, timestamp) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+    "INSERT INTO usuarios (nombre, apellido, password, email, rol) VALUES ($1, $2, $3, $4, $5) RETURNING *";
   const { rows } = await pool.query(queryUser, [
     nombre,
     apellido,
     password,
     email,
     rol,
-    fecha,
   ]);
 
   const user = rows[0];
