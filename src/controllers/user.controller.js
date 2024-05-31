@@ -10,6 +10,7 @@ const login = async (req, res) => {
   }
   try {
     const user = await userModel.findOneEmail(email);
+
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -20,12 +21,15 @@ const login = async (req, res) => {
     const payload = {
       email,
       user_id: user.id,
-      rol: user.rol
+      rol: user.rol,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
+
+    delete user.password;
+    // console.log(user);
 
     return res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
@@ -44,6 +48,7 @@ const register = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
+
     const hashedPassword = await bcript.hash(password, 10);
     const newUser = await userModel.create({
       email,
