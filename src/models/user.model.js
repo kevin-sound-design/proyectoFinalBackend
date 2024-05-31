@@ -38,7 +38,6 @@ const create = async ({
   ]);
 
   const user = rows[0];
-  console.log(user);
 
   const queryAddress =
     'INSERT INTO direcciones ("id usuarios", direccion) VALUES ($1, $2) RETURNING *';
