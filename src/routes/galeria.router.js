@@ -1,13 +1,14 @@
 import { Router } from "express";
-import {galeriaController} from '../controllers/galeria.controller.js'
+import { galeriaController } from "../controllers/galeria.controller.js";
 
+const router = Router();
 
-const router = Router()
+router.get("/", galeriaController.getProducts);
 
-router.get('/', galeriaController.getProducts);
+router.get("/categorias", galeriaController.getCategories);
 
-router.get('/:id', galeriaController.getProductById);
+router.get("/filtros", galeriaController.getProductsByFilters);
 
-
+router.get("/:id", galeriaController.getProductById);
 
 export default router;
