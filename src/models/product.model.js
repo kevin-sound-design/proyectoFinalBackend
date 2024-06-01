@@ -1,6 +1,6 @@
 // models/product.model.js
 import { pool } from "../dataBase/conection.js";
-
+import { getActualQuery } from "../utils/queries.js";
 const createProduct = async ({
   titulo,
   descripcion,
@@ -71,16 +71,24 @@ const queryProductsByFilters = async ({
     filtros.length ? " WHERE " : ""
   } ${filtros.join(" AND ")}`;
 
-  console.log(consulta);
+  console.log(getActualQuery(consulta, values));
 
   const { rows } = await pool.query(consulta, values);
   console.log(rows);
   return rows;
 };
 
+const queryCategories = async () => {
+  const query = `
+    SELECT * FROM categorias;
+  `;
+  const { rows } = await pool.query(query);
+  return rows;
+};
 export const productModel = {
   createProduct,
   updateProduct,
   deleteProduct,
   queryProductsByFilters,
+  queryCategories,
 };

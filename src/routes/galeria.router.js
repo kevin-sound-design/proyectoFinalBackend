@@ -5,6 +5,8 @@ const router = Router();
 
 router.get("/", galeriaController.getProducts);
 
+router.get("/categorias", galeriaController.getCategories);
+
 router.get("/filtros", galeriaController.getProductsByFilters);
 
 router.get("/:id", galeriaController.getProductById);
