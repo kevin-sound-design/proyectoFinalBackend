@@ -4,9 +4,14 @@ import format from "pg-format";
 import { productModel } from "../models/product.model.js";
 
 const getProducts = async (req, res) => {
-  const formattedQuery = format("SELECT * FROM %I", "producto");
-  const { rows } = await pool.query(formattedQuery);
-  res.json(rows);
+  try {
+    const formattedQuery = format("SELECT * FROM %I", "producto");
+    const { rows } = await pool.query(formattedQuery);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
+    res.status(500).json({ message: "Error al obtener productos" });
+  }
 };
 
 const getProductById = async (req, res) => {
