@@ -1,7 +1,7 @@
 import pool from '../dataBase/conection.js';
 import format from 'pg-format';
 
-const guardarPedidos = async (req, res) => {
+export const guardarPedidos = async (req, res) => {
   const pedido = req.body[0];
   const productoPedido = req.body[1];
   const formattedQueryPedidos = format(
@@ -40,13 +40,12 @@ const guardarPedidos = async (req, res) => {
     });
 
     const results = await Promise.all(formattedQueries.map(query => pool.query(query)));
-    res.json(results);
+    res.status(201).json(results);
   } catch (error) {
     console.error("Error al guardar pedidos:", error);
     res.status(500).json({ error: "Error al guardar pedidos" });
   }
 };
-
 
 export const carritoController = {
   guardarPedidos
