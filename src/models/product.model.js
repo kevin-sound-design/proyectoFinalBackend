@@ -52,6 +52,16 @@ const queryProductsByFilters = async ({
   const tableProducts = "producto";
   const tableCategoriaProductos = '"categoria-producto"';
   const tablaCategorias = "categorias";
+
+  console.log({
+    minPrice,
+    maxPrice,
+    isNew,
+    isUsed,
+    categoria,
+  });
+  console.log(Boolean(isUsed && isNew), Boolean(isUsed), Boolean(isNew));
+  console.log(typeof isNew, typeof isUsed);
   const agregarFiltro = (campo, comparador, valor) => {
     values.push(valor);
     const { length } = filtros;
@@ -74,7 +84,7 @@ const queryProductsByFilters = async ({
   console.log(getActualQuery(consulta, values));
 
   const { rows } = await pool.query(consulta, values);
-  console.log(rows);
+  // console.log(rows);
   return rows;
 };
 

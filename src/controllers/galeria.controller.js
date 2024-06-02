@@ -27,6 +27,7 @@ const getProductById = async (req, res) => {
 
 const getProductsByFilters = async (req, res) => {
   const { minPrice, maxPrice, isNew, isUsed, categoria } = req.query;
+
   try {
     const products = await productModel.queryProductsByFilters({
       minPrice,
