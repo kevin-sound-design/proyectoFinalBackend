@@ -60,8 +60,8 @@ const queryProductsByFilters = async ({
     isUsed,
     categoria,
   });
-  console.log(Boolean(isUsed && isNew), Boolean(isUsed), Boolean(isNew));
-  console.log(typeof isNew, typeof isUsed);
+  // console.log(Boolean(isUsed && isNew), Boolean(isUsed), Boolean(isNew));
+  // console.log(typeof isNew, typeof isUsed);
   const agregarFiltro = (campo, comparador, valor) => {
     values.push(valor);
     const { length } = filtros;
