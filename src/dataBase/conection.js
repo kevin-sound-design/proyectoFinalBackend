@@ -12,9 +12,10 @@ export const pool = new Pool({
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
   allowExitOnIdle: true, */
-  connectionString: "postgres://kevin:6NHiwgw11NgcvFbS5Z0YDFljPkb3pEMM@dpg-cpgf54cf7o1s738e32n0-a/proyecto_final_full_stack",
-  ssl:true
+  connectionString: process.env.INTERNALURL,
+  ssl: true
 });
 
+pool.connect((err, client, release) => { if (err) { return console.error('Error adquiriendo cliente', err.stack); } console.log('Conectado a la base de datos'); release(); });
 
 export default pool;
