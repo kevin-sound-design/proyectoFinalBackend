@@ -1,21 +1,25 @@
 // models/product.model.js
 import { pool } from "../dataBase/conection.js";
 import { getActualQuery } from "../utils/queries.js";
+
 const createProduct = async ({
   titulo,
   descripcion,
   precio,
   imagenUrl,
   stock,
+  estado,
 }) => {
   const query = `
     INSERT INTO producto (titulo, descripcion, precio, "imagenUrl", stock, estado)
-    VALUES ($1, $2, $3, $4, $5, true) RETURNING *;
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
   `;
-  const values = [titulo, descripcion, precio, imagenUrl, stock];
+  const values = [titulo, descripcion, precio, imagenUrl, stock, estado];
   const { rows } = await pool.query(query, values);
   return rows[0];
 };
+
+export { createProduct };
 
 const updateProduct = async (
   id,

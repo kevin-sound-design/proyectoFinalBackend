@@ -1,7 +1,8 @@
 // controllers/product.controller.js
 import { productModel } from "../models/product.model.js";
+import { createProduct } from "../models/product.model.js";
 
-const createProduct = async (req, res) => {
+const createProductController = async (req, res) => {
   const { titulo, descripcion, precio, imagenUrl, stock, estado } = req.body;
 
   if (!titulo || !descripcion || !precio || !imagenUrl || !stock || estado === undefined) {
@@ -9,13 +10,16 @@ const createProduct = async (req, res) => {
   }
 
   try {
-    const newProduct = await productModel.createProduct({ titulo, descripcion, precio, imagenUrl, stock, estado });
+    const newProduct = await createProduct({ titulo, descripcion, precio, imagenUrl, stock, estado });
     return res.status(201).json({ message: "Product created successfully", newProduct });
   } catch (error) {
     console.error("Error creating product:", error);
     return res.status(500).json({ message: error.message });
   }
 };
+
+export { createProductController };
+
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
