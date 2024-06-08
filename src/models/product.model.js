@@ -1,6 +1,7 @@
 // models/product.model.js
 import { pool } from "../dataBase/conection.js";
 import { getActualQuery } from "../utils/queries.js";
+import format from 'pg-format';
 
 const createProduct = async ({
   titulo,
@@ -9,14 +10,76 @@ const createProduct = async ({
   imagenUrl,
   stock,
   estado,
+  categoria
 }) => {
-  const query = `
-    INSERT INTO producto (titulo, descripcion, precio, "imagenUrl", stock, estado)
-    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
-  `;
-  const values = [titulo, descripcion, precio, imagenUrl, stock, estado];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
+  const client = await pool.connect();
+
+  try {
+    // Inicia una transacción
+    await client.query('BEGIN');
+
+    // Paso 1: Obtener el id de la categoría
+    const formattedQueryCategoria = format(
+      `SELECT %I FROM %I WHERE %I = %L`,
+      "id",
+      "categorias",
+      "categoria",
+      categoria
+    );
+    
+
+    const categoriaResult = await client.query(formattedQueryCategoria);
+    if (categoriaResult.rows.length === 0) {
+      throw new Error('Categoría no encontrada');
+    }
+    const categoriaId = categoriaResult.rows[0].id;
+
+    // Paso 2: Insertar el producto y obtener su id
+    const formattedQueryProducto = format(
+      `INSERT INTO %I (%I, %I, %I, %I, %I, %I) VALUES (%L, %L, %L, %L, %L, %L) RETURNING %I`,
+      "producto",
+      "titulo",
+      "descripcion",
+      "precio",
+      "imagenUrl",
+      "stock",
+      "estado",
+      titulo,
+      descripcion,
+      precio,
+      imagenUrl,
+      stock,
+      estado,
+      "id"
+    );
+
+    const productoResult = await client.query(formattedQueryProducto);
+    const productoId = productoResult.rows[0].id;
+
+    // Paso 3: Insertar en la tabla intermedia categoria_producto
+    const formattedQueryIntermedia = format(
+      `INSERT INTO %I (%I, %I) VALUES (%L, %L)`,
+      "categoria-producto",
+      "id categoria",
+      "id producto",
+      categoriaId,
+      productoId
+    );
+
+    await client.query(formattedQueryIntermedia);
+
+    // Confirmar la transacción
+    await client.query('COMMIT');
+
+    return productoId;
+  } catch (error) {
+    // En caso de error, deshacer la transacción
+    await client.query('ROLLBACK');
+    console.error('Error creating product:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 export { createProduct };

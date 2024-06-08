@@ -1,16 +1,15 @@
 // controllers/product.controller.js
 import { productModel } from "../models/product.model.js";
-import { createProduct } from "../models/product.model.js";
 
 const createProductController = async (req, res) => {
-  const { titulo, descripcion, precio, imagenUrl, stock, estado } = req.body;
+  const { titulo, descripcion, precio, imagenUrl, stock, estado, categoria } = req.body;
 
-  if (!titulo || !descripcion || !precio || !imagenUrl || !stock || estado === undefined) {
+  if (!titulo || !descripcion || !categoria || !precio || !imagenUrl || !stock || estado === undefined) {
     return res.status(400).json({ error: "All fields are required, including 'estado'" });
   }
 
   try {
-    const newProduct = await createProduct({ titulo, descripcion, precio, imagenUrl, stock, estado });
+    const newProduct = await productModel.createProduct({ titulo, descripcion, precio, imagenUrl, stock, estado, categoria });
     return res.status(201).json({ message: "Product created successfully", newProduct });
   } catch (error) {
     console.error("Error creating product:", error);
@@ -54,7 +53,7 @@ const deleteProduct = async (req, res) => {
 };
 
 export const productController = {
-  createProduct,
+  createProductController,
   updateProduct,
   deleteProduct,
 };

@@ -5,7 +5,7 @@ import { authMiddleware, isAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/", authMiddleware, isAdmin, productController.createProduct);
+router.post("/", authMiddleware, isAdmin, productController.createProductController);
 router.put("/:id", authMiddleware, isAdmin, productController.updateProduct);
 router.delete("/:id", authMiddleware, isAdmin, productController.deleteProduct);
 
