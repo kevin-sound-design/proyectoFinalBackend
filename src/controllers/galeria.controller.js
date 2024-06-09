@@ -38,7 +38,9 @@ const getProductsByFilters = async (req, res) => {
     });
 
     if (!products || products.length === 0)
-      return res.status(200).json({ message: "No products found" });
+      return res
+        .status(200)
+        .json({ message: "No products found", products: [] });
     return res.status(200).json({ products });
   } catch (error) {
     console.error("Error fetching products:", error);
